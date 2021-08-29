@@ -43,8 +43,8 @@ Done! Bot Siap Digunakan :')
 - Ubah apiKey XTeam Di [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json), Belum Punya apiKey XTeam? Beli [Disini](https://api.xteam.xyz)
 - Ubah Nomor Owner [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json)
 
-Jika Ada Yang Ingin Ditanyakan Silahkan Chat Ke Nomer Dibawah Ini Ya.
-• [✍🏻 Developer](https://wa.me/6285745351659)
+Jika Ada Yang Ingin Ditanyakan Silahkan Chat Ke Nomer Dibawah Ini Ya.<br>
+• [👤 Developer](https://wa.me/6285745351659)<br>
 • [👤 Creator](https://wa.me/6285282677885)
 
 ## Fitur
