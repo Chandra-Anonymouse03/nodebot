@@ -1,2 +1,0 @@
-# nodebot
-WhatsApp Bot NodeJs
