@@ -40,7 +40,7 @@ Done! Bot Siap Digunakan :')
 ## Information
 - Bot Ini Dibuat Semirip Mungkin Dengan Repository [imageToSticker](https://github.com/YogaSakti/imageToSticker)
 - Bot Ini Akan Terus Di-update Hingga Fitur-fiturnya Banyak
-- Ubah apiKey XTeam Di [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json), Belum Punya apiKey XTeam? Beli [Disini](https://api.xteam.xyz)
+- Ubah apiKey XTeam Di [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json)<br>Belum Punya ApiKey XTeam? Beli Atau Buat Trial [Disini](https://api.xteam.xyz)
 - Ubah Nomor Owner [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json)
 
 Jika Ada Yang Ingin Ditanyakan Silahkan Chat Ke Nomer Dibawah Ini Ya.<br>
