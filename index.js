@@ -6,13 +6,17 @@ const chalk = require("chalk")
 const CFonts = require("cfonts")
 const WAConnection = _client.WAConnection(_WAConnection)
 
+/* let app = require("express")
+app = app()
+let port = 3000 || process.env.PORT */
+
 async function starts() {
   const client = new WAConnection()
   client.logger.level = "warn"
 
   client.on("qr", () => console.log("SCAN THIS QR!"))
   fs.existsSync("./session.json") && client.loadAuthInfo("./session.json")
-  let nodeBot = CFonts.render("NodeBOT||Dev. By :|NezukoChan||Creator :|Chandraa :v", {
+  let nodeBot = CFonts.render("NodeBOT|By|NezukoChans", {
     font: "simple",
     align: "center",
     gradient: ["red", "green"],
@@ -20,7 +24,7 @@ async function starts() {
   })
   
   console.log(nodeBot.string)
-  
+ 
   client.on("connecting", () => console.log(chalk.green("[CONNECTING] Connecting...")))
   client.on("open", () => console.log(chalk.green("[READY] WhatsApp BOT Ready!")))
   await client.connect({ timeoutMs: 30*1000 })
@@ -32,5 +36,10 @@ async function starts() {
   
 }
 
+/* app.get("/", (req, res) => {
+  res.send({ logs: "whatsapp bot is ready!" })
+}) */
+
 starts()
 .catch(e => console.log(e))
+/* app.listen(port, () => {}) */
