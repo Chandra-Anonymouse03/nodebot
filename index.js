@@ -16,7 +16,7 @@ async function starts() {
 
   client.on("qr", () => console.log("SCAN THIS QR!"))
   fs.existsSync("./session.json") && client.loadAuthInfo("./session.json")
-  let nodeBot = CFonts.render("NodeBOT|By|NezukoChans", {
+  let nodeBot = CFonts.render("NodeBOT||Dev. By :|NezukoChan||Creator :|Chandraa :v", {
     font: "simple",
     align: "center",
     gradient: ["red", "green"],
