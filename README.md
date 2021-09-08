@@ -56,6 +56,7 @@ Fitur Utama
 | Tiktok Downloader |✔️|
 | Ytmp4 Downloader |✔️|
 | Menulis |✔️|
+| Igstalk |✔️|
 
 Fitur Group
 | Fitur | Status |
@@ -65,6 +66,7 @@ Fitur Group
 | Promote |✔️|
 | Demote |✔️|
 | Link Group |✔️|
+| Reset Link Group |✔️|
 | Tag All |✔️|
 | Leave Group |✔️|
 
