@@ -41,7 +41,7 @@ Done! Bot Siap Digunakan :')
 - Ubah Nomor Owner [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json)
 
 Jika Ada Yang Ingin Ditanyakan Silahkan Chat Ke Nomer Dibawah Ini Ya.<br>
-• [✍🏻 Developer](https://wa.me/6285745351659<br>
+• [✍🏻 Developer](https://wa.me/6285745351659) <br>
 • [👤 Creator](https://wa.me/6285282677885)
 
 ## Fitur
