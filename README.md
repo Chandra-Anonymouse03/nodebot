@@ -15,10 +15,7 @@ Aplikasi WhatsApp
 ## Install
 ```bash
 $ apt update -y && apt upgrade -y
-$ apt install nodejs -y
 $ apt install git -y
-$ apt install ffmpeg -y
-$ apt install libwebp -y
 $ git clone https://github.com/Chandra-Anonymouse03/nodebot
 $ cd nodebot
 $ bash install.sh
@@ -43,20 +40,46 @@ Done! Bot Siap Digunakan :')
 - Ubah apiKey XTeam Di [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json), Belum Punya apiKey XTeam? Beli [Disini](https://api.xteam.xyz)
 - Ubah Nomor Owner [Disini](https://github.com/Chandra-Anonymouse03/nodebot/blob/main/settings.json)
 
-Jika Ada Yang Ingin Ditanyakan Silahkan Chat Ke Nomer Dibawah Ini Ya.
-• [✍🏻 Developer](https://wa.me/6285745351659)
+Jika Ada Yang Ingin Ditanyakan Silahkan Chat Ke Nomer Dibawah Ini Ya.<br>
+• [✍🏻 Developer](https://wa.me/6285745351659<br>
 • [👤 Creator](https://wa.me/6285282677885)
 
 ## Fitur
-Fitur Utama
+Fitur Maker
 | Fitur | Status |
 | :---: | :----: |
 | Sticker |✔️|
+| Nulis |✔️|
+| Blackpink |✔️|
+| Neon |✔️|
+
+Fitur Downloader
+| Fitur | Status |
+| :---: | :----: |
 | Instagram Downloader |✔️|
 | Tiktok Downloader |✔️|
-| Ytmp4 Downloader |✔️|
-| Menulis |✔️|
-| Igstalk |✔️|
+| YouTube Downloader |✔️|
+| Stalk Ig |✔️|
+| Facebook Downloader |✔️|
+| Play Music |✔️|
+
+Fitur Anime
+| Fitur | Status |
+| :---: | :----: |
+| Waifu |✔️|
+| Husbu |✔️|
+| Nekonime |✔️|
+| Anime Search |✔️|
+
+Fitur Animal
+| Fitur | Status |
+| :---: | :----: |
+| Dog |✔️|
+| Cat |✔️|
+| Bird |✔️|
+| Koala |✔️|
+| Racoon |✔️|
+| Kangaroo |✔️|
 
 Fitur Group
 | Fitur | Status |
@@ -67,11 +90,16 @@ Fitur Group
 | Demote |✔️|
 | Link Group |✔️|
 | Reset Link Group |✔️|
-| Tag All |✔️|
+| Tagall |✔️|
+| Mentionall (hide) |✔️|
 | Leave Group |✔️|
+| Settname |✔️|
+| Settdesc |✔️|
+| Group Info |✔️|
+
 
 ## Special Thanks To
 - [Baileys](https://github.com/@adiwajshing/baileys)
 - [imageToSticker](https://github.com/YogaSakti/imageToSticker)
 - [termux-wabot](https://github.com/MhankBarBar/termux-wabot)
-- [NezukoChan](https://github.com/NezukoChans28/nodebot)
+- [NezukoChans](https://github.com/NezukoChans28/nodebot)

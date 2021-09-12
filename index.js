@@ -15,8 +15,8 @@ async function starts() {
   client.logger.level = "warn"
 
   client.on("qr", () => console.log("SCAN THIS QR!"))
-  fs.existsSync("./session.json") && client.loadAuthInfo("./session.json")
-  let nodeBot = CFonts.render("NodeBOT||Dev. By :|NezukoChan||Creator :|Chandraa :v", {
+  fs.existsSync("./chandra.json") && client.loadAuthInfo("./chandra.json")
+  let nodeBot = CFonts.render("NodeBOT||Dev. by :|NezukoChan||Creator :|Chandraa :v", {
     font: "simple",
     align: "center",
     gradient: ["red", "green"],
@@ -28,7 +28,7 @@ async function starts() {
   client.on("connecting", () => console.log(chalk.green("[CONNECTING] Connecting...")))
   client.on("open", () => console.log(chalk.green("[READY] WhatsApp BOT Ready!")))
   await client.connect({ timeoutMs: 30*1000 })
-  fs.writeFileSync("./session.json", JSON.stringify(client.base64EncodedAuthInfo(), null, "\t"))
+  fs.writeFileSync("./chandra.json", JSON.stringify(client.base64EncodedAuthInfo(), null, "\t"))
   
   client.on("chat-update", (msg) => {
     msgHandler(WAConnection, MessageType, Mimetype, msg, client)

@@ -3,6 +3,8 @@ const fs = require("fs")
 const ffmpeg = require("fluent-ffmpeg")
 const chalk = require("chalk")
 const moment = require("moment")
+const moments = require("moment-timezone")
+const yts = require("yt-search")
 
 const help = require("./lib/help.js")
 const settings = JSON.parse(fs.readFileSync("./settings.json"))
@@ -57,7 +59,7 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
 			}
 
     let mess = {
-      err: `*[ERROR]* Silahkan Lapor Owner!\n• Owner? *${prefix}owner*`,
+      err: `*[ERROR]* Silahkan Lapor Owner! ( *${prefix}owner* )`,
       grp: {
         notGrp: "Fitur Ini Khusus Group!",
         notAdm: "Kamu Bukanlah Admin Group!",
@@ -72,6 +74,11 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
     // ALWAYS ONLINE
     client.updatePresence(from, "available")
 
+    // AUTO RESPON
+    if (m.message.conversation.includes("Bot")) {
+      client.reply(from, `Hi, kak ${sender}!\nKetik *${prefix}menu* untuk melihat list fitur.`, id)
+    }
+
     switch (command) {
       case "help":
       case "menu":
@@ -85,7 +92,7 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
       }
       break
 
-      // FITUR UTAMA
+      // FITUR MAKER
 	case "s":
 	case "stiker":
       case "sticker": {
@@ -99,8 +106,46 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
     }
       break
 
+	case "neon": {
+        if (args.length === 0) return client.reply(from, "Masukkan Sebuah Teks!\n\nContoh: *" + prefix + "neon* Chandra", id)
+        await client.sendImage(from, { url: "https://api.xteam.xyz/textpro/neon?text=" + q + "&APIKEY=" + settings.apiXteam + "" }, "Neon Maker", id)
+      }
+      break
+      case "bpink":
+      case "blackpink": {
+        if (args.length === 0) return client.reply(from, "Masukkan Sebuah Teks!\n\nContoh: *" + prefix + "bpink* Chandra", id)
+        await client.sendImage(from, { url: "https://api.xteam.xyz/textpro/blackpink?text=" + q + "&APIKEY=" + settings.apiXteam + "" }, "Blackpink Maker", id)
+      }
+      break
 
-	// INSTAGRAM
+     case "nulis": {
+        try {
+        if (args.length === 0) return client.reply(from, "Masukkan Text\n\nContoh : *" + prefix + "nulis* NezukoChans", id) 
+        return client.sendImage(from, { url : "https://api.xteam.xyz/magernulis2?text=" + q + "&APIKEY=" + settings.apiXteam + "" }, "Done Kak @" + sender.split("@")[0], id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+
+     /* case "tomp3": {
+	try {
+        if (isMediaMsg || isQuotedVideo) {
+          let encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(m).replace("quotedM", "m")).message.extendedTextMessage.contextInfo : m
+	  let chan = "audio"
+          await client.sendAudio(from, { url : encmedia }, chan + ".mp3", id)
+	}
+      } catch (e) {
+        console.log(e)
+        client.sendMessage(from, mess.err, MessageType.text, { quoted: m })
+      }
+    }
+      break */
+
+
+	// DOWNLOADER
       case "ig":
       case "instagram": {
         try {
@@ -120,16 +165,14 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
         client.sendMessage(from, mess.err, MessageType.text, { quoted: m })
       }
     }
-      break 
+      break
 
-
-	// TIKTOK
       case "tik": 
       case "tiktok": {
         try {
         if (args.length === 0) return client.sendMessage(from, "Masukkan Url Tiktok!\n\nContoh : *" + prefix + "tiktok* https://vt.tiktok.com/ZSJc2PkTM/", MessageType.text, { quoted: m, detectLinks: true })
         let { data } = await axios.get("https://api.xteam.xyz/dl/tiktok?url=" + args[0] + "&APIKEY=" + settings.apiXteam + "")
-        let { server_1 } = data 
+        let { server_1 } = data
         let captions = `Nickname : *${data.info[0].authorMeta.nickName}*\nUsername : *${data.info[0].authorMeta.name}*\nCaption :\n${data.info[0].text}`
         await client.sendMessage(from, { url : server_1 }, MessageType.video, { quoted: m, caption: captions, mimetype: Mimetype.mp4 })
       } catch (e) {
@@ -138,7 +181,56 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
       }
     }
       break 
-      
+
+	case "lagu":
+	case "musik":
+	case "play": {
+        try {
+        if (args.length === 0) return client.reply(from, "Masukkan Judul Lagu!\n\nContoh : *" + prefix + "play* Bahagia Itu Sederhana", id)
+        client.reply(from, mess.wait, id)
+        let urlYt = await yts(q)
+        let { data } = await axios.get("https://youtube-media-downloader.shellyschan.repl.co/?url=" + urlYt.all[0].url)
+        let { judul, deskripsi, thumbnail, audio } = data 
+        let captions = `Judul : *${judul}*\nDeskripsi : ${deskripsi}`
+        await client.sendImage(from, { url : thumbnail + ".jpg" }, captions, id)
+        await client.sendAudio(from, { url : audio }, judul + ".mp3", id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+     case "facebook": 
+      case "fb": {
+        try {
+        if (args.length === 0) return client.reply(from, "Masukkan Url Facebook\n\nContoh : *" + prefix + "fb* https://www.facebook.com/botikaonline/videos/837084093818982", id)
+        client.reply(from, mess.wait, id)
+        let { data } = await axios.get("https://api.xteam.xyz/dl/fbv2?url=" + args[0] + "&APIKEY=" + settings.apiXteam + "")
+        let { hd } = data.result
+        let captions = `Judul : *${data.result.meta.title}*`
+        await client.sendVideo(from, { url : hd.url }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break 
+
+      case "igstalk":
+      case "igprofile": {
+        try {
+        if (args.length === 0) return client.reply(from, "Masukkan Username Instagram\n\nContoh : *" + prefix + "igprofile* nezuko.chan.12", id)
+        let { data } = await axios.get("https://api.xteam.xyz/dl/igstalk?nama=" + args[0] + "&APIKEY=" + settings.apiXteam + "")
+        let { username, full_name, follower_count, following_count, biography, hd_profile_pic_url_info } = data.result.user
+        let captions = `Username : *${username}*\nFull Name : *${full_name}*\nFollower : *${follower_count}*\nFollowing : *${following_count}*\nBio : ${biography}`
+        await client.sendImage(from, { url : hd_profile_pic_url_info.url }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
 
 	// YT Downloader
 	case "yta":
@@ -176,6 +268,177 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
     }
       break 
 
+      // FITUR ANIME
+      case "waifu": {
+        return client.sendImage(from, { url: "https://animerestapi.herokuapp.com/waifu" }, null, id)
+      }
+      break
+      case "husbu": {
+        return client.sendImage(from, { url: "https://animerestapi.herokuapp.com/husbu" }, null, id)
+      }
+      break
+	case "nekonime":
+      case "neko": {
+        return client.sendImage(from, { url: "https://animerestapi.herokuapp.com/neko" }, null, id)
+      }
+      break
+      case "animesearch":
+      case "anime": {
+        try {
+        if (args.length === 0) return client.reply(from, "Masukkan Nama Anime!\n\nContoh: *" + prefix + "animesearch* Kanojo Okarishimasu", id)
+        let { data } = await axios.get("https://animerestapi.herokuapp.com/animesearch?anime=" + q)
+        let { thumb, title, info, synopsis, url_download } = await data
+        let captions = `Title : *${title}*\n\nInfo : ${info}\n\nSinopsis :\n*${synopsis}*\n\nUrl Download :\n${url_download}`
+        await client.sendImage(from, { url: thumb }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+	// Random Image Animal
+
+      case "dog":
+      case "anjing": { // Chan 12/09
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/dog")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+      case "cat":
+      case "kucing": { // Chan 12/09
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/cat")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+/*
+      case "panda": {
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/panda")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+      case "fox":
+      case "rubah": {
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/fox")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+      case "redpanda":
+      case "pandamerah": {
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/redpanda")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+*/
+      case "koala": { // Chan 12/09
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/koala")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+      case "bird":
+      case "burung": { // Chan 12/09
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/birb")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+      case "racoon":
+      case "rakun": { // Chan 12/09
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/racoon")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+      case "kangaroo":
+      case "kanguru": { // Chan 12/09
+        try {
+        let { data } = await axios.get("https://some-random-api.ml/animal/kangaroo")
+        let { image, fact } = data
+        let captions = `${fact}`
+        await client.sendImage(from, { url : image }, captions, id)
+      } catch (e) {
+        console.log(e)
+        client.reply(from, mess.err, id)
+      }
+    }
+      break
+
+
+        /* case "kick": {
+        try {
+        if (!isGroupMsg) return client.reply(from, mess.grp.notGrp, id)
+        if (!isAdminGroup) return client.reply(from, mess.grp.notAdm, id)
+        if (!isAdminBotGroup) return client.reply(from, mess.grp.notBotAdm, id)
+        if (!q) return client.reply(from, "Masukkan Nomor Target!\n\nContoh : *" + prefix + "kick* 628×××", id)
+        return client.groupRemove(from, [q + "@s.whatsapp.net"])
+      } catch (e) {
+        console.log(e)
+        client.sendMessage(from, mess.err, MessageType.text, { quoted: m })
+      }
+    }
+    break 
+    */
+
       // FITUR GROUP 
       case "add": {
         try {
@@ -191,60 +454,7 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
     }
       break 
 
-     case "facebook": 
-      case "fb": {
-        try {
-        if (args.length === 0) return client.reply(from, "Masukkan Url Facebook\n\nContoh : *" + prefix + "fb* https://www.facebook.com/botikaonline/videos/837084093818982", id)
-        client.reply(from, mess.wait, id)
-        let { data } = await axios.get("https://api.xteam.xyz/dl/fbv2?url=" + args[0] + "&APIKEY=" + settings.apiXteam + "")
-        let { hd } = data.result
-        let captions = `Judul : *${data.result.meta.title}*`
-        await client.sendVideo(from, { url : hd.url }, captions, id)
-      } catch (e) {
-        console.log(e)
-        client.reply(from, mess.err, id)
-      }
-    }
-      break 
-      case "igstalk":
-      case "igprofile": {
-        try {
-        if (args.length === 0) return client.reply(from, "Masukkan Username Instagram\n\nContoh : *" + prefix + "igprofile* nezuko.chan.12", id)
-        let { data } = await axios.get("https://api.xteam.xyz/dl/igstalk?nama=" + args[0] + "&APIKEY=" + settings.apiXteam + "")
-        let { username, full_name, follower_count, following_count, biography, hd_profile_pic_url_info } = data.result.user
-        let captions = `Username : *${username}*\nFull Name : *${full_name}*\nFollower : *${follower_count}*\nFollowing : *${following_count}*\nBio : *${biography}*`
-        await client.sendImage(from, { url : hd_profile_pic_url_info.url }, captions, id)
-      } catch (e) {
-        console.log(e)
-        client.reply(from, mess.err, id)
-      }
-    }
-      break
 
-     case "nulis": {
-        try {
-        if (args.length === 0) return client.reply(from, "Masukkan Text\n\nContoh : *" + prefix + "nulis* NezukoChans", id) 
-        return client.sendImage(from, { url : "https://api.xteam.xyz/magernulis2?text=" + q + "&APIKEY=" + settings.apiXteam + "" }, "Done Kak @" + sender.split("@")[0], id)
-      } catch (e) {
-        console.log(e)
-        client.reply(from, mess.err, id)
-      }
-    }
-      break
-        /* case "kick": {
-        try {
-        if (!isGroupMsg) return client.reply(from, mess.grp.notGrp, id)
-        if (!isAdminGroup) return client.reply(from, mess.grp.notAdm, id)
-        if (!isAdminBotGroup) return client.reply(from, mess.grp.notBotAdm, id)
-        if (!q) return client.reply(from, "Masukkan Nomor Target!\n\nContoh : *" + prefix + "kick* 628×××", id)
-        return client.groupRemove(from, [q + "@s.whatsapp.net"])
-      } catch (e) {
-        console.log(e)
-        client.sendMessage(from, mess.err, MessageType.text, { quoted: m })
-      }
-    }
-    break 
-    */
     case "kick": { // Chan 31/08
       try {
         if (!isGroupMsg) return client.reply(from, mess.grp.notGrp, id)
@@ -419,10 +629,28 @@ module.exports = msgHandler = async (WAConnection, MessageType, Mimetype, msg, c
         client.reply(from, mess.err, id)
       }
     }
-    break  
+    break
 
-        
-        
+        case "mentionall": {
+        if (!isGroupMsg) return client.reply(from, mess.grp.notGrp, id)
+        if (!isAdminGroup) return client.reply(from, mess.grp.notAdm, id)
+        let { participants, subject } = await groupData
+        let captions = "Mention All Members *" + subject + "*"
+        let mem = []
+        for (let i of participants) {
+          mem.push(i.jid)
+        }
+        await client.sendMessage(from, captions, MessageType.text, { quoted: id, contextInfo: { mentionedJid: mem } } )
+    }
+    break
+    case "groupinfo": {
+        if (!isGroupMsg) return client.reply(from, mess.grp.notGrp, id)
+        let { subject, creation, desc, participants } = await groupData
+        let captions = `Name : *${subject}*\nCreation Date : *${moment(`${creation}` * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss')}*\nParticpants Length : *${participants.length}*\nAdmin Length : *${groupAdmin.length}*\nDescription :\n${desc}`
+        await client.sendImage(from, { url: await client.getProfilePicture(from) }, captions, id)
+    }
+    break
+
 /* Default */
       default:
         console.log(chalk.redBright("[ERROR] UNREGISTERED COMMAND FROM " + pushname))
